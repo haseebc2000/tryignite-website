@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ignite AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --black: #0a0a0a; --white: #f5f5f3; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Outfit', sans-serif; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--sans); font-weight: 300; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--white); color: var(--black); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 28px 48px; mix-blend-mode: difference; }
+  .logo { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: 0.02em; color: var(--white); text-decoration: none; }
+  .logo span { font-weight: 300; font-style: italic; opacity: 0.6; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { color: var(--white); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; transition: opacity 0.3s; }
+  .nav-links a:hover { opacity: 1; }
+  .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%); }
+  .hero-line { position: absolute; width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.08), transparent); height: 100%; }
+  .hero-line:nth-child(1) { left: 20%; } .hero-line:nth-child(2) { left: 40%; } .hero-line:nth-child(3) { left: 60%; } .hero-line:nth-child(4) { left: 80%; }
+  .hero-content { position: relative; text-align: center; z-index: 2; }
+  .hero-tag { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.5; margin-bottom: 40px; font-weight: 300; animation: fadeUp 1s ease 0.2s both; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(56px, 10vw, 140px); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; animation: fadeUp 1s ease 0.4s both; }
+  .hero h1 em { font-style: italic; font-weight: 300; opacity: 0.7; }
+  .hero-sub { margin-top: 32px; font-size: 17px; font-weight: 200; opacity: 0.5; max-width: 420px; line-height: 1.7; animation: fadeUp 1s ease 0.6s both; }
+  .scroll-indicator { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.3; animation: fadeUp 1s ease 1s both; }
+  .scroll-indicator span { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 48px; background: var(--white); animation: scrollPulse 2s ease infinite; }
+  section { padding: 140px 48px; position: relative; }
+  .section-label { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.35; margin-bottom: 48px; font-weight: 400; }
+  .section-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--white); opacity: 0.4; vertical-align: middle; margin-right: 16px; }
+  .about { border-top: 1px solid rgba(255,255,255,0.06); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; max-width: 1200px; }
+  .about-text h2 { font-family: var(--serif); font-size: clamp(32px, 4vw, 52px); font-weight: 300; line-height: 1.2; margin-bottom: 32px; }
+  .about-text h2 em { font-style: italic; opacity: 0.6; }
+  .about-text p { font-size: 15px; line-height: 1.8; opacity: 0.5; font-weight: 200; max-width: 480px; }
+  .about-stats { display: flex; flex-direction: column; justify-content: center; gap: 48px; }
+  .stat { border-left: 1px solid rgba(255,255,255,0.1); padding-left: 24px; }
+  .stat-number { font-family: var(--serif); font-size: 48px; font-weight: 300; margin-bottom: 4px; }
+  .stat-desc { font-size: 13px; opacity: 0.4; letter-spacing: 0.05em; }
+  .verticals { border-top: 1px solid rgba(255,255,255,0.06); }
+  .verticals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; max-width: 1200px; }
+  .vertical-card { border: 1px solid rgba(255,255,255,0.06); padding: 64px 48px; position: relative; transition: background 0.5s ease; cursor: default; }
+  .vertical-card:hover { background: rgba(255,255,255,0.02); }
+  .vertical-num { font-family: var(--serif); font-size: 64px; font-weight: 300; opacity: 0.08; position: absolute; top: 24px; right: 32px; }
+  .vertical-card h3 { font-family: var(--serif); font-size: 28px; font-weight: 400; margin-bottom: 20px; }
+  .vertical-card p { font-size: 14px; line-height: 1.8; opacity: 0.45; font-weight: 200; max-width: 380px; }
+  .vertical-tag { display: inline-block; margin-top: 24px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.3; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 2px; }
+  .vision { border-top: 1px solid rgba(255,255,255,0.06); text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .vision blockquote { font-family: var(--serif); font-size: clamp(28px, 4vw, 46px); font-weight: 300; line-height: 1.4; max-width: 800px; opacity: 0.85; font-style: italic; }
+  .vision .attribution { margin-top: 32px; font-size: 13px; opacity: 0.3; letter-spacing: 0.1em; }
+  .contact { border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: flex-end; min-height: 50vh; }
+  .contact-left h2 { font-family: var(--serif); font-size: clamp(40px, 6vw, 80px); font-weight: 300; line-height: 1.1; margin-bottom: 32px; }
+  .contact-left h2 em { font-style: italic; opacity: 0.5; }
+  .contact-email { font-size: 16px; opacity: 0.5; text-decoration: none; color: var(--white); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; transition: opacity 0.3s; font-weight: 200; }
+  .contact-email:hover { opacity: 1; }
+  .contact-right { text-align: right; opacity: 0.3; font-size: 12px; letter-spacing: 0.1em; line-height: 2; }
+  footer { padding: 32px 48px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; font-size: 12px; opacity: 0.3; }
+  .noise { position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.035; background-size: 256px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); transform-origin: top; } }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { nav { padding: 20px 24px; } .nav-links { display: none; } section { padding: 80px 24px; } .about-grid { grid-template-columns: 1fr; gap: 64px; } .verticals-grid { grid-template-columns: 1fr; } .contact { flex-direction: column; align-items: flex-start; gap: 48px; } .contact-right { text-align: left; } footer { padding: 24px; flex-direction: column; gap: 12px; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<nav><a href="#" class="logo">ignite<span>.ai</span></a><ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#verticals">Verticals</a></li><li><a href="#vision">Vision</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+<section class="hero"><div class="hero-bg"><div class="hero-line"></div><div class="hero-line"></div><div class="hero-line"></div><div class="hero-line"></div></div><div class="hero-content"><p class="hero-tag">AI Lab · Venture Investments</p><h1>Ignite<em>.ai</em></h1><p class="hero-sub">Building the future of video intelligence and deploying capital into the companies that define it.</p></div><div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div></section>
+<section class="about" id="about"><div class="section-label reveal">Who We Are</div><div class="about-grid"><div class="about-text reveal"><h2>An AI lab at the intersection of <em>creation</em> and <em>capital</em></h2><p>Ignite AI operates at the frontier of generative video — building models that transform how stories are told, products are shown, and ideas come to life. Simultaneously, we invest in the infrastructure and companies accelerating the AI revolution through secondary and primary venture transactions.</p></div><div class="about-stats reveal"><div class="stat"><div class="stat-number">2</div><div class="stat-desc">Core verticals — Lab &amp; Ventures</div></div><div class="stat"><div class="stat-number">AI</div><div class="stat-desc">Video generation at the frontier</div></div><div class="stat"><div class="stat-number">∞</div><div class="stat-desc">Possibilities when creation meets capital</div></div></div></div></section>
+<section class="verticals" id="verticals"><div class="section-label reveal">What We Do</div><div class="verticals-grid"><div class="vertical-card reveal"><div class="vertical-num">01</div><h3>AI Video Lab</h3><p>State-of-the-art generative video models that replace static PDFs and PowerPoints with dynamic, personalized AI-generated content.</p><span class="vertical-tag">Research · Product · Models</span></div><div class="vertical-card reveal"><div class="vertical-num">02</div><h3>Venture Secondaries</h3><p>Strategic secondary investments in category-defining AI and technology companies. We provide liquidity to early stakeholders while gaining exposure to the most consequential private companies of the decade.</p><span class="vertical-tag">Secondaries · SPV · Co-Invest</span></div><div class="vertical-card reveal"><div class="vertical-num">03</div><h3>Primary Investments</h3><p>Selective primary capital deployment into AI-native companies at inflection points — where our technical expertise as operators provides genuine edge.</p><span class="vertical-tag">Growth · AI-Native · Primary</span></div><div class="vertical-card reveal"><div class="vertical-num">04</div><h3>Portfolio Intelligence</h3><p>Proprietary AI-driven diligence and portfolio monitoring tools built on our own models. A flywheel of insight and innovation.</p><span class="vertical-tag">Analytics · Diligence · Edge</span></div></div></section>
+<section class="vision" id="vision"><div class="section-label reveal">Thesis</div><blockquote class="reveal">The next great media companies will be built on generative AI. We build the technology — and back the builders.</blockquote><p class="attribution reveal">Ignite AI</p></section>
+<section class="contact" id="contact"><div class="contact-left reveal"><h2>Let's <em>talk</em></h2><a href="mailto:hello@ignite.ai" class="contact-email">hello@ignite.ai</a></div><div class="contact-right reveal">New York<br>San Francisco</div></section>
+<footer><span>© 2026 Ignite AI. All rights reserved.</span><span>Built at the frontier.</span></footer>
+<script>const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } }); }, { threshold: 0.15 }); document.querySelectorAll('.reveal').forEach(el => observer.observe(el));</script>
+</body>
+  </html>
